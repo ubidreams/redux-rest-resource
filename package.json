@@ -1,7 +1,7 @@
 {
   "name": "redux-rest-resource",
   "description": "Generates types, actions and reducers for you to easily interact with any REST API.",
-  "version": "0.16.0",
+  "version": "0.16.2",
   "main": "lib/index.js",
   "jsnext:main": "src/index.js",
   "author": "Olivier Louvignes <olivier@mg-crea.com>",
@@ -69,5 +69,11 @@
     "resource",
     "rest",
     "state"
-  ]
+  ],
+  "dependencies": {
+    "gitbook-plugin-anchorjs": "^1.1.1",
+    "gitbook-plugin-edit-link": "^2.0.2",
+    "gitbook-plugin-github": "^2.0.0",
+    "gitbook-plugin-prism": "^2.3.0"
+  }
 }

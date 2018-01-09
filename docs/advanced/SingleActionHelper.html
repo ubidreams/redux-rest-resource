@@ -4,7 +4,7 @@
     <head>
         <meta charset="UTF-8">
         <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
-        <title>Headers Override · Redux</title>
+        <title>Single Action Helper · Redux</title>
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <meta name="description" content="">
         <meta name="generator" content="GitBook 3.2.2">
@@ -57,10 +57,10 @@
     <link rel="shortcut icon" href="../../gitbook/images/favicon.ico" type="image/x-icon">
 
     
-    <link rel="next" href="TransformResponse.html" />
+    <link rel="next" href="HeadersOverride.html" />
     
     
-    <link rel="prev" href="SingleActionHelper.html" />
+    <link rel="prev" href="PureActions.html" />
     
 
     </head>
@@ -279,7 +279,7 @@
             
         </li>
     
-        <li class="chapter " data-level="1.5.3" data-path="SingleActionHelper.html">
+        <li class="chapter active" data-level="1.5.3" data-path="SingleActionHelper.html">
             
                 <a href="SingleActionHelper.html">
             
@@ -292,7 +292,7 @@
             
         </li>
     
-        <li class="chapter active" data-level="1.5.4" data-path="HeadersOverride.html">
+        <li class="chapter " data-level="1.5.4" data-path="HeadersOverride.html">
             
                 <a href="HeadersOverride.html">
             
@@ -476,7 +476,7 @@
     <!-- Title -->
     <h1>
         <i class="fa fa-circle-o-notch fa-spin"></i>
-        <a href="../.." >Headers Override</a>
+        <a href="../.." >Single Action Helper</a>
     </h1>
 </div>
 
@@ -491,44 +491,18 @@
     
                                 <section class="normal markdown-section">
                                 
-                                <h1 id="headers-override">Headers Override</h1>
-<ul>
-<li>You can configure <code>headers</code> globally:</li>
-</ul>
-<pre class="language-"><code class="lang-js"><span class="token keyword">export</span> <span class="token keyword">const</span> <span class="token punctuation">{</span>types<span class="token punctuation">,</span> actions<span class="token punctuation">,</span> reducers<span class="token punctuation">}</span> <span class="token operator">=</span> <span class="token function">createResource</span><span class="token punctuation">(</span><span class="token punctuation">{</span>
-  name<span class="token punctuation">:</span> <span class="token string">&apos;user&apos;</span><span class="token punctuation">,</span>
-  url<span class="token punctuation">:</span> <span class="token string">&apos;https://foo.com/users/:id&apos;</span><span class="token punctuation">,</span>
+                                <h1 id="single-action">Single Action</h1>
+<p>We also expose a helper to generate a store module for quick single action setup (eg. a basic fetch).</p>
+<pre class="language-"><code class="lang-js"><span class="token keyword">const</span> url <span class="token operator">=</span> <span class="token string">&apos;https://foo.com/users/:id&apos;</span><span class="token punctuation">;</span>
+<span class="token keyword">export</span> <span class="token keyword">const</span> <span class="token punctuation">{</span>types<span class="token punctuation">,</span> actions<span class="token punctuation">,</span> rootReducer<span class="token punctuation">}</span> <span class="token operator">=</span> <span class="token function">createResourceAction</span><span class="token punctuation">(</span><span class="token punctuation">{</span>
+  name<span class="token punctuation">:</span> <span class="token string">&apos;environment&apos;</span><span class="token punctuation">,</span>
+  method<span class="token punctuation">:</span> <span class="token string">&apos;GET&apos;</span><span class="token punctuation">,</span>
+  url<span class="token punctuation">,</span>
   headers<span class="token punctuation">:</span> <span class="token punctuation">{</span>
-    <span class="token string">&apos;X-Custom-Header&apos;</span><span class="token punctuation">:</span> <span class="token string">&apos;foobar&apos;</span>
-  <span class="token punctuation">}</span>
+    Authorization<span class="token punctuation">:</span> <span class="token template-string"><span class="token string">`Bearer </span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span>apiJwt<span class="token interpolation-punctuation punctuation">}</span></span><span class="token string">`</span></span>
+  <span class="token punctuation">}</span><span class="token punctuation">,</span>
+  credentials<span class="token punctuation">:</span> <span class="token string">&apos;include&apos;</span>
 <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-</code></pre>
-<ul>
-<li>You may want to globally update default <code>headers</code> at run time (eg. you received a new JWT):</li>
-</ul>
-<pre class="language-"><code class="lang-js"><span class="token keyword">import</span> <span class="token punctuation">{</span>defaultHeaders<span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">&apos;redux-rest-resource&apos;</span><span class="token punctuation">;</span>
-<span class="token keyword">const</span> jwt <span class="token operator">=</span> <span class="token string">&apos;xvDjirE9MCIi800xMxi4EKeTm8e9FUBR&apos;</span><span class="token punctuation">;</span>
-Object<span class="token punctuation">.</span><span class="token function">assign</span><span class="token punctuation">(</span>defaultHeaders<span class="token punctuation">,</span> <span class="token punctuation">{</span>Authorization<span class="token punctuation">:</span> <span class="token template-string"><span class="token string">`Bearer </span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span>jwt<span class="token interpolation-punctuation punctuation">}</span></span><span class="token string">`</span></span><span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-</code></pre>
-<ul>
-<li>You can also configure <code>headers</code> for a specific action:</li>
-</ul>
-<pre class="language-"><code class="lang-js"><span class="token keyword">export</span> <span class="token keyword">const</span> <span class="token punctuation">{</span>types<span class="token punctuation">,</span> actions<span class="token punctuation">,</span> reducers<span class="token punctuation">}</span> <span class="token operator">=</span> <span class="token function">createResource</span><span class="token punctuation">(</span><span class="token punctuation">{</span>
-  name<span class="token punctuation">:</span> <span class="token string">&apos;user&apos;</span><span class="token punctuation">,</span>
-  url<span class="token punctuation">:</span> <span class="token string">&apos;https://foo.com/users/:id&apos;</span><span class="token punctuation">,</span>
-  actions<span class="token punctuation">:</span> <span class="token punctuation">{</span>
-    update<span class="token punctuation">:</span> <span class="token punctuation">{</span>
-      headers<span class="token punctuation">:</span> <span class="token punctuation">{</span>
-        <span class="token string">&apos;X-Custom-Header&apos;</span><span class="token punctuation">:</span> <span class="token string">&apos;foobar&apos;</span>
-      <span class="token punctuation">}</span>
-    <span class="token punctuation">}</span>
-  <span class="token punctuation">}</span>
-<span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-</code></pre>
-<ul>
-<li>Or as an one-time override at action call-time:</li>
-</ul>
-<pre class="language-"><code class="lang-js">actions<span class="token punctuation">.</span><span class="token function">updateUser</span><span class="token punctuation">(</span><span class="token punctuation">{</span>firstName<span class="token punctuation">:</span> <span class="token string">&apos;Olivier&apos;</span><span class="token punctuation">}</span><span class="token punctuation">,</span> <span class="token punctuation">{</span>headers<span class="token punctuation">:</span> <span class="token punctuation">{</span>Authorization<span class="token punctuation">:</span> <span class="token template-string"><span class="token string">`Bearer </span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span>jwt<span class="token interpolation-punctuation punctuation">}</span></span><span class="token string">`</span></span><span class="token punctuation">}</span><span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 </code></pre>
 
                                 
@@ -557,12 +531,12 @@ Object<span class="token punctuation">.</span><span class="token function">assig
 
             
                 
-                <a href="SingleActionHelper.html" class="navigation navigation-prev " aria-label="Previous page: Single Action Helper">
+                <a href="PureActions.html" class="navigation navigation-prev " aria-label="Previous page: Pure Actions">
                     <i class="fa fa-angle-left"></i>
                 </a>
                 
                 
-                <a href="TransformResponse.html" class="navigation navigation-next " aria-label="Next page: Transform Response">
+                <a href="HeadersOverride.html" class="navigation navigation-next " aria-label="Next page: Headers Override">
                     <i class="fa fa-angle-right"></i>
                 </a>
                 
@@ -573,7 +547,7 @@ Object<span class="token punctuation">.</span><span class="token function">assig
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"Headers Override","level":"1.5.4","depth":2,"next":{"title":"Transform Response","level":"1.5.5","depth":2,"path":"docs/advanced/TransformResponse.md","ref":"docs/advanced/TransformResponse.md","articles":[]},"previous":{"title":"Single Action Helper","level":"1.5.3","depth":2,"path":"docs/advanced/SingleActionHelper.md","ref":"docs/advanced/SingleActionHelper.md","articles":[]},"dir":"ltr"},"config":{"plugins":["edit-link","prism","-highlight","github","anchorjs"],"styles":{"website":"build/gitbook.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"prism":{},"github":{"url":"https://github.com/mgcrea/redux-rest-resource/"},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"fontsettings":{"theme":"white","family":"sans","size":2},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"edit-link":{"label":"Edit This Page","base":"https://github.com/mgcrea/redux-rest-resource/tree/master"},"theme-default":{"styles":{"website":"build/gitbook.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false},"anchorjs":{}},"theme":"default","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"Redux","gitbook":"3.2.2"},"file":{"path":"docs/advanced/HeadersOverride.md","mtime":"2017-10-23T16:01:26.029Z","type":"markdown"},"gitbook":{"version":"3.2.2","time":"2018-01-09T17:42:16.046Z"},"basePath":"../..","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"Single Action Helper","level":"1.5.3","depth":2,"next":{"title":"Headers Override","level":"1.5.4","depth":2,"path":"docs/advanced/HeadersOverride.md","ref":"docs/advanced/HeadersOverride.md","articles":[]},"previous":{"title":"Pure Actions","level":"1.5.2","depth":2,"path":"docs/advanced/PureActions.md","ref":"docs/advanced/PureActions.md","articles":[]},"dir":"ltr"},"config":{"plugins":["edit-link","prism","-highlight","github","anchorjs"],"styles":{"website":"build/gitbook.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"prism":{},"github":{"url":"https://github.com/mgcrea/redux-rest-resource/"},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"fontsettings":{"theme":"white","family":"sans","size":2},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"edit-link":{"label":"Edit This Page","base":"https://github.com/mgcrea/redux-rest-resource/tree/master"},"theme-default":{"styles":{"website":"build/gitbook.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false},"anchorjs":{}},"theme":"default","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"Redux","gitbook":"3.2.2"},"file":{"path":"docs/advanced/SingleActionHelper.md","mtime":"2017-12-14T21:51:39.956Z","type":"markdown"},"gitbook":{"version":"3.2.2","time":"2018-01-09T17:42:16.046Z"},"basePath":"../..","book":{"language":""}});
         });
     </script>
 </div>
