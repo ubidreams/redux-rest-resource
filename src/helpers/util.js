@@ -54,4 +54,4 @@ export const getGerundName = name =>
   `${name.replace(/e$/, '')}ing`;
 
 export const getPluralName = name =>
-  `${name}s`;
+  (name.endsWith('s') ? name : `${name}s`);
